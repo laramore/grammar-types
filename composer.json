@@ -13,6 +13,9 @@
         "nastuzzi-samy/reflection-namespace": ">=1.0",
         "laramore/base": "^0.2.0"
     },
+    "conflict": {
+        "laravel/framework": "< 5.6"
+    },
     "authors": [
         {
             "name": "Nastuzzi Samy",
