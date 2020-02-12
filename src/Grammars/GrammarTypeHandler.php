@@ -10,7 +10,6 @@
 
 namespace Laramore\Grammars;
 
-use Illuminate\Database\Eloquent\Model;
 use Laramore\Observers\BaseHandler;
 
 class GrammarTypeHandler extends BaseHandler

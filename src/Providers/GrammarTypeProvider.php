@@ -15,17 +15,11 @@ use Laramore\Interfaces\{
 	IsALaramoreManager, IsALaramoreProvider
 };
 use Laramore\Exceptions\ConfigException;
+use Laramore\Facades\GrammarType;
 use ReflectionNamespace;
 
-class GrammarTypesProvider extends ServiceProvider implements IsALaramoreProvider
+class GrammarTypeProvider extends ServiceProvider implements IsALaramoreProvider
 {
-    /**
-     * Type manager.
-     *
-     * @var array
-     */
-    protected static $managers;
-
     /**
      * Register our facade and create the manager.
      *
@@ -34,11 +28,11 @@ class GrammarTypesProvider extends ServiceProvider implements IsALaramoreProvide
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../../config/grammars.php', 'grammars',
+            __DIR__.'/../../config/grammar.php', 'grammar',
         );
 
-        $this->app->singleton('GrammarTypes', function() {
-            return static::getManager();
+        $this->app->singleton('GrammarType', function() {
+            return static::generateManager();
         });
 
         $this->app->booted([$this, 'bootedCallback']);
@@ -52,7 +46,7 @@ class GrammarTypesProvider extends ServiceProvider implements IsALaramoreProvide
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../../config/grammars.php' => config_path('grammars.php'),
+            __DIR__.'/../../config/grammar.php' => config_path('grammar.php'),
         ]);
     }
 
@@ -63,12 +57,12 @@ class GrammarTypesProvider extends ServiceProvider implements IsALaramoreProvide
      */
     public static function getDefaults(): array
     {
-        $classes = config('grammars.configurations');
+        $classes = config('grammar.configurations');
 
         switch ($classes) {
             case 'automatic':
-                $classes = (new ReflectionNamespace(config('grammars.namespace')))->getClassNames();
-                app('config')->set('grammars.configurations', $classes);
+                $classes = (new ReflectionNamespace(config('grammar.namespace')))->getClassNames();
+                app('config')->set('grammar.configurations', $classes);
 
                 return $classes;
 
@@ -76,7 +70,7 @@ class GrammarTypesProvider extends ServiceProvider implements IsALaramoreProvide
                 return [];
 
             case 'base':
-                return config('grammars.namespace');
+                return config('grammar.namespace');
 
             default:
                 if (\is_array($classes)) {
@@ -85,21 +79,20 @@ class GrammarTypesProvider extends ServiceProvider implements IsALaramoreProvide
         }
 
         throw new ConfigException(
-            'grammars.configurations', ["'automatic'", "'base'", "'disabled'", 'array of class names'], $classes
+            'grammar.configurations', ["'automatic'", "'base'", "'disabled'", 'array of class names'], $classes
         );
     }
 
     /**
      * Generate the corresponded manager.
      *
-     * @param  string $key
      * @return IsALaramoreManager
      */
-    public static function generateManager(string $key): IsALaramoreManager
+    public static function generateManager(): IsALaramoreManager
     {
-        $class = config('grammars.manager');
+        $class = config('grammar.manager');
 
-        static::$managers[$key] = $manager = new $class();
+        $manager = new $class();
 
         foreach (static::getDefaults() as $class) {
             if ($manager->doesManage($class)) {
@@ -111,28 +104,12 @@ class GrammarTypesProvider extends ServiceProvider implements IsALaramoreProvide
     }
 
     /**
-     * Return the generated manager for this provider.
-     *
-     * @return IsALaramoreManager
-     */
-    public static function getManager(): IsALaramoreManager
-    {
-        $appHash = \spl_object_hash(app());
-
-        if (!isset(static::$managers[$appHash])) {
-            return static::generateManager($appHash);
-        }
-
-        return static::$managers[$appHash];
-    }
-
-    /**
      * Lock all managers after booting.
      *
      * @return void
      */
     public function bootedCallback()
     {
-        static::getManager()->lock();
+        GrammarType::lock();
     }
 }

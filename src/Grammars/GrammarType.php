@@ -10,7 +10,6 @@
 
 namespace Laramore\Grammars;
 
-use Laramore\Traits\IsLocked;
 use Laramore\Observers\BaseObserver;
 
 class GrammarType extends BaseObserver

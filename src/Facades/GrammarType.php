@@ -1,6 +1,6 @@
 <?php
 /**
- * Add a facade for the GrammarTypes.
+ * Add a facade for the GrammarType.
  *
  * @author Samy Nastuzzi <samy@nastuzzi.fr>
  *
@@ -12,7 +12,7 @@ namespace Laramore\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class GrammarTypes extends Facade
+class GrammarType extends Facade
 {
     /**
      * Give the name of the accessor.
@@ -21,6 +21,6 @@ class GrammarTypes extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'GrammarTypes';
+        return 'GrammarType';
     }
 }
