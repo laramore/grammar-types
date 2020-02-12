@@ -11,6 +11,7 @@
 namespace Laramore\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Container\Container;
 use Laramore\Interfaces\{
 	IsALaramoreManager, IsALaramoreProvider
 };
@@ -46,7 +47,7 @@ class GrammarTypeProvider extends ServiceProvider implements IsALaramoreProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../../config/grammar.php' => config_path('grammar.php'),
+            __DIR__.'/../../config/grammar.php' => $this->app->make('path.config').'/grammar.php',
         ]);
     }
 
@@ -57,12 +58,13 @@ class GrammarTypeProvider extends ServiceProvider implements IsALaramoreProvider
      */
     public static function getDefaults(): array
     {
-        $classes = config('grammar.configurations');
+        $config = Container::getInstance()->config;
+        $classes = $config->get('grammar.configurations');
 
         switch ($classes) {
             case 'automatic':
-                $classes = (new ReflectionNamespace(config('grammar.namespace')))->getClassNames();
-                app('config')->set('grammar.configurations', $classes);
+                $classes = (new ReflectionNamespace($config->get('grammar.namespace')))->getClassNames();
+                $config->set('grammar.configurations', $classes);
 
                 return $classes;
 
@@ -70,7 +72,7 @@ class GrammarTypeProvider extends ServiceProvider implements IsALaramoreProvider
                 return [];
 
             case 'base':
-                return config('grammar.namespace');
+                return $config->get('grammar.namespace');
 
             default:
                 if (\is_array($classes)) {
@@ -90,7 +92,7 @@ class GrammarTypeProvider extends ServiceProvider implements IsALaramoreProvider
      */
     public static function generateManager(): IsALaramoreManager
     {
-        $class = config('grammar.manager');
+        $class = Container::getInstance()->config->get('grammar.manager');
 
         $manager = new $class();
 
