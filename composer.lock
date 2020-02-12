@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13e4eb426586e5af8f5ce708d3aab4df",
+    "content-hash": "daa1dfef17059f47f7db86d51f247518",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -374,16 +374,16 @@
         },
         {
             "name": "laramore/base",
-            "version": "v0.3.3",
+            "version": "v0.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laramore/base.git",
-                "reference": "d9f969d89fe0815393b3b9bb713857087b1fa3de"
+                "reference": "5aeae2c54cf42a9ff9ad7378080215ad90378e0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laramore/base/zipball/d9f969d89fe0815393b3b9bb713857087b1fa3de",
-                "reference": "d9f969d89fe0815393b3b9bb713857087b1fa3de",
+                "url": "https://api.github.com/repos/laramore/base/zipball/5aeae2c54cf42a9ff9ad7378080215ad90378e0d",
+                "reference": "5aeae2c54cf42a9ff9ad7378080215ad90378e0d",
                 "shasum": ""
             },
             "require": {
@@ -429,7 +429,7 @@
                 "owned",
                 "unlock"
             ],
-            "time": "2020-02-09T12:30:43+00:00"
+            "time": "2020-02-12T06:32:36+00:00"
         },
         {
             "name": "nastuzzi-samy/reflection-namespace",
