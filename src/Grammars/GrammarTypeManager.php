@@ -39,10 +39,12 @@ class GrammarTypeManager extends BaseManager implements LaramoreManager
     protected function locking()
     {
         foreach ($this->getHandlers() as $handler) {
-            foreach ($handler->all() as $type) {
-                Blueprint::macro($type, function ($column) use ($type) {
-                    return $this->addColumn($type, $column);
-                });
+            foreach ($handler->all() as $types) {
+                foreach ($types->all() as $type) {
+                    Blueprint::macro($type, function ($column) use ($type) {
+                        return $this->addColumn($type, $column);
+                    });
+                }
             }
         }
 
