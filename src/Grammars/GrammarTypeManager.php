@@ -13,9 +13,9 @@ namespace Laramore\Grammars;
 use Illuminate\Database\Grammar;
 use Illuminate\Database\Schema\Blueprint;
 use Laramore\Observers\BaseManager;
-use Laramore\Interfaces\IsALaramoreManager;
+use Laramore\Contracts\Manager\LaramoreManager;
 
-class GrammarTypeManager extends BaseManager implements IsALaramoreManager
+class GrammarTypeManager extends BaseManager implements LaramoreManager
 {
     /**
      * Allowed observable sub class.
@@ -38,16 +38,12 @@ class GrammarTypeManager extends BaseManager implements IsALaramoreManager
      */
     protected function locking()
     {
-        $observed = array_unique(array_merge([], ...array_values(array_map(function ($handler) {
-            return array_merge([], ...array_map(function ($observer) {
-                return $observer->all();
-            }, $handler->all()));
-        }, $this->handlers))));
-
-        foreach ($observed as $type) {
-            Blueprint::macro($type, function ($column) use ($type) {
-                return $this->addColumn($type, $column);
-            });
+        foreach ($this->getHandlers() as $handler) {
+            foreach ($handler->all() as $type) {
+                Blueprint::macro($type, function ($column) use ($type) {
+                    return $this->addColumn($type, $column);
+                });
+            }
         }
 
         parent::locking();
