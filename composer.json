@@ -4,16 +4,14 @@
     "keywords": ["Laramore", "Laravel", "Model", "Automatic", "Auto", "Fields", "Field", "Meta", "Types", "GrammarTypes"],
     "license": "MIT",
     "config": {
-       "platform": {
-           "php": "7.0.8"
-       }
-   },
+        "platform": {
+            "php": "7.1.3"
+        }
+    },
     "require": {
-        "php": ">=7.0.8",
-        "nastuzzi-samy/reflection-namespace": ">=1.0",
-        "laramore/base": "~0.4",
-        "illuminate/support": ">=5.5",
-        "illuminate/database": ">=5.5"
+        "php": ">=7.1.3",
+        "laramore/base": ">=0.9",
+        "nastuzzi-samy/reflection-namespace": ">=1.0"
     },
     "conflict": {
         "laravel/framework": "< 5.6"

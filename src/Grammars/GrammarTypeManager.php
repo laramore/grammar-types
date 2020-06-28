@@ -42,6 +42,7 @@ class GrammarTypeManager extends BaseManager implements LaramoreManager
             foreach ($handler->all() as $types) {
                 foreach ($types->all() as $type) {
                     Blueprint::macro($type, function ($column) use ($type) {
+                        /** @var Blueprint $this */
                         return $this->addColumn($type, $column);
                     });
                 }
